@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Todo List App</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: blue; /* Arrière-plan bleu */
+        }
+        header {
+            margin-bottom: 20px;
+        }
+        .todo {
+            list-style-type: none;
+            padding: 0;
+        }
+        .todo li {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .selected {
+            background-color: #d3d3d3; /* Couleur de fond pour la tâche sélectionnée */
+        }
+        .mon-bouton {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <input type="text" placeholder="Entrer une activité.." id="item">
+    <button id="add">Ajouter</button>
+</header>
+
+<div class="container">
+    <ul class="todo" id="todo"></ul>
+</div>
+
+<button id="modifier-btn" class="mon-bouton">MODIFIER</button>
+<button id="supprimer-btn" class="mon-bouton">SUPPRIMER</button>
+
+<script>
+    const todoList = document.getElementById('todo');
+    const addButton = document.getElementById('add');
+    const modifierButton = document.getElementById('modifier-btn');
+    const supprimerButton = document.getElementById('supprimer-btn');
+    const changerArrierePlanButton = document.getElementById('changer-arriere-plan-btn');
+    let selectedTask = null;
+
+    // Fonction pour ajouter une tâche
+    addButton.addEventListener('click', function() {
+        const itemInput = document.getElementById('item');
+        const taskText = itemInput.value.trim();
+
+        if (taskText !== "") {
+            const li = document.createElement('li');
+            li.textContent = taskText;
+
+            // Ajouter un gestionnaire d'événements pour sélectionner la tâche
+            li.addEventListener('click', function() {
+                if (selectedTask) {
+                    selectedTask.classList.remove('selected');
+                }
+                selectedTask = li;
+                selectedTask.classList.add('selected');
+            });
+
+            todoList.appendChild(li);
+            itemInput.value = ""; // Réinitialiser le champ de saisie
+        } else {
+            alert("Veuillez entrer une tâche !");
+        }
+    });
+
+    // Fonction pour modifier le texte de la tâche sélectionnée
+    modifierButton.addEventListener('click', function() {
+        if (selectedTask) {
+            const nouveauTexte = prompt("Entrez le nouveau texte pour la tâche :", selectedTask.textContent);
+            if (nouveauTexte !== null && nouveauTexte.trim() !== "") {
+                selectedTask.textContent = nouveauTexte;
+            }
+        } else {
+            alert("Veuillez sélectionner une tâche à modifier !");
+        }
+    });
+
+    // Fonction pour supprimer la tâche sélectionnée
+    supprimerButton.addEventListener('click', function() {
+        if (selectedTask) {
+            todoList.removeChild(selectedTask);
+            selectedTask = null; // Réinitialiser la sélection
+        } else {
+            alert("Veuillez sélectionner une tâche à supprimer !");
+        }
+    });
+
+    // Fonction pour changer l'arrière-plan en bleu
+    changerArrierePlanButton.addEventListener('click', function() {
+        document.body.style.backgroundColor = "blue";
+    });
+</script>
+
+</body>
+</html>
+
